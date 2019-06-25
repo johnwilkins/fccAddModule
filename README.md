@@ -36,12 +36,12 @@ The program assumes the use of an `{includedir}` variable in the assembly files.
 
 ## Options:
 
--n `<moduleName>` OR --name `<moduleName>` REQUIRED
--t `(proc|con|ref)` OR --type `(proc|con|ref)` OPTIONAL
--a `<assemblyFile>` OR --assembly `<assemblyFile>` OPTIONAL
--c `<componentName>` OR --component `<componentName>` OPTIONAL
--s `<sourceFileName>` OR --source `<sourceFileName>` OPTIONAL
--d `<moduleDestinationPath>` OR --destination `<moduleDestinationPath>` OPTIONAL
+* -n `<moduleName>` OR --name `<moduleName>` REQUIRED
+* -t `(proc|con|ref)` OR --type `(proc|con|ref)` OPTIONAL
+* -a `<assemblyFile>` OR --assembly `<assemblyFile>` OPTIONAL
+* -c `<componentName>` OR --component `<componentName>` OPTIONAL
+* -s `<sourceFileName>` OR --source `<sourceFileName>` OPTIONAL
+* -d `<moduleDestinationPath>` OR --destination `<moduleDestinationPath>` OPTIONAL
 
 The `-t` or `--type` option specifies the type of module. The options are `proc` for procedure, `con` for concept, and `ref` for reference. By default, the program uses `proc`. You may override the default with the `-t` or `--type` option on the command line, or set a new default in the `fccAddModule.conf` configuration file. _Procedure_ is the most common module type so `proc` is the default value.
 
