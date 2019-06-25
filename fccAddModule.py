@@ -28,7 +28,7 @@ def main(argv):
         moduleName = ""
 
         #define command line arguments.
-        opts, args = getopt.getopt(argv,"n:t:c:a:s:",["name=","type=","component=","assembly=","source="])
+        opts, args = getopt.getopt(argv,"n:t:c:a:s:d:h",["name=","type=","component=","assembly=","source=", "destination=", "help"])
 
         for opt, arg in opts:
             if opt in ("-n", "--name"):
@@ -41,6 +41,11 @@ def main(argv):
                 assemblyFileName = arg
             elif opt in ("-s", "--source"):
                 moduleSourceFileName = arg
+            elif opt in ("-d", "--destination"):
+                moduleDestinationPath = arg
+            elif opt in ("-h", "--help"):
+                printUsage()
+                sys.exit()
 
         if moduleName == "":
             print ("\nERROR: Module name is required! Use the -n or --name option.\n")
@@ -87,14 +92,14 @@ def main(argv):
 
 
 def printUsage():
-        print "You may specify the options in any order.\nThe fccAddModule.py helper program will create a new module in the flexible customer content/modular format.\nThis helper program MUST run in the same directory as the master.adoc file.\nTo incorporate existing topic content, use the -s or --source option.\nNOTE: The -s or --source will omit the first line to erase the existing [[anchor-tag]].\nTo APPEND an include statement to an assembly, use the -a or --assembly option.\nThe assembly file SHOULD exist already; however, you may create a file without the required formatting on-the-fly.\nTo override the default component type in fccAddModule.conf, use the -c or --component option."
-        print "\nUsage: \n$ python fccAddModule.py -n '<moduleName>' [options] \n\nOPTIONS:\n"
-        print "-n '<moduleName>' OR --name '<moduleName>' (REQUIRED)"
-        print "-t (proc|con|ref) OR --type (proc|con|ref) OPTIONAL. DEFAULT = proc"
-        print "-a <assemblyFile> OR --assembly <assemblyFile> (OPTIONAL)"
-        print "-c <componentName> OR --component <componentName> (e.g., 'osp', 'ceph') May set default in fccAddModule.conf"
-        print "-s <sourceFileName> OR --source <sourceFileName> The source file to include. OPTIONAL\n"
-        print "-d <moduleDestinationPath> OR --destination <moduleDestinationPath> The destination path for the module. (OPTIONAL)"
+        print "\n\n====================\nfccAddModule.py Help\n====================\n\n\tThe fccAddModule.py helper program will create a new module in the flexible customer\n\tcontent/modular format. This helper program MUST run in the same directory as the\n\tmaster.adoc file. To incorporate existing topic content, use the -s or --source option.\n\tNOTE: The -s or --source will omit the first line to erase the existing [[anchor-tag]].\n\tTo APPEND an include statement to an assembly, use the -a or --assembly option.\n\tThe assembly file SHOULD exist already; however, you may create a file without\n\tthe required formatting on-the-fly. To override the default component type in\n\tfccAddModule.conf, use the -c or --component option."
+        print "\nUSAGE: \n\t$ python fccAddModule.py -n '<moduleName>' [options] \n\nOPTIONS:\n"
+        print "\t-n '<moduleName>' OR --name '<moduleName>' REQUIRED"
+        print "\t-t (proc|con|ref) OR --type (proc|con|ref) OPTIONAL. DEFAULT = proc"
+        print "\t-a <assemblyFile> OR --assembly <assemblyFile> OPTIONAL"
+        print "\t-c <componentName> OR --component <componentName>"
+        print "\t-s <sourceFileName> OR --source <sourceFileName> The source file to include. OPTIONAL"
+        print "\t-d <moduleDestinationPath> OR --destination <moduleDestinationPath> The destination path for the module. OPTIONAL\n"
 
 if __name__ == "__main__":
     main(sys.argv[1:])
