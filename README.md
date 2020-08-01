@@ -32,6 +32,9 @@ The generated file contents include:
 
     = My Module Name
 
+If the module is an assembly, typically the assembly will be incorporated into the `master.adoc` file or another assembly file, which is in the project directory rather than the default `modules` destination directory. Specify the `-d` option and the project folder as the destination for the module when adding an assembly. For example:
+
+    python fccAddModule.py -n "Assembly" -a master.adoc -d ./ -t assembly
 
 The program appends an include statement to the assembly file, if specified:
 
@@ -48,7 +51,7 @@ The program assumes the use of an `{includedir}` variable in the assembly files.
 * -s `<sourceFileName>` OR --source `<sourceFileName>` OPTIONAL
 * -d `<moduleDestinationPath>` OR --destination `<moduleDestinationPath>` OPTIONAL
 
-The `-t` or `--type` option specifies the type of module. The options are `proc` for procedure, `con` for concept, and `ref` for reference. By default, the program uses `proc`. You may override the default with the `-t` or `--type` option on the command line, or set a new default in the `fccAddModule.conf` configuration file. _Procedure_ is the most common module type so `proc` is the default value.
+The `-t` or `--type` option specifies the type of module. The options are `proc` for procedure, `con` for concept, `ref` for reference and `assembly` for an assembly. By default, the program uses `proc`. You may override the default with the `-t` or `--type` option on the command line, or set a new default in the `fccAddModule.conf` configuration file. _Procedure_ is the most common module type so `proc` is the default value.
 
 The component name should be the product name or a sub-component of the product.
 
