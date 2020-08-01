@@ -34,7 +34,7 @@ The generated file contents include:
 
 If the module is an assembly, typically the assembly will be incorporated into the `master.adoc` file or another assembly file, which is in the project directory rather than the default `modules` destination directory. Specify the `-d` option and the project folder as the destination for the module when adding an assembly. For example:
 
-    python fccAddModule.py -n "Assembly" -a master.adoc -d ./ -t assembly
+    $ python fccAddModule.py -n "Assembly" -a master.adoc -d ./ -t assembly
 
 The program appends an include statement to the assembly file, if specified:
 
