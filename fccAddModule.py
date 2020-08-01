@@ -21,7 +21,7 @@ def main(argv):
     componentType = configParser.get('fcc-add-module-conf', 'defaultComponentType')
     locale = configParser.get('fcc-add-module-conf', 'defaultLocale')
     fileExtension = configParser.get('fcc-add-module-conf', 'fileExtension')
-    ctx = "-{context}"
+    ctx = "_{context}"
     assemblyFileName = ""
 
     try:
@@ -57,6 +57,7 @@ def main(argv):
 
 
         outputFileName = moduleDestinationPath + moduleType + "_" + componentType + "_" + baseModuleId + "_" + locale + fileExtension
+        headingComment = "// This is included in the following assemblies:\n//\n// " + assemblyFileName
         moduleId = "[id='" + baseModuleId + ctx + "']"
 
         if moduleSourceFileName != "":
@@ -64,6 +65,7 @@ def main(argv):
             sourceFile.next()
 
         outFile = open(outputFileName, 'w') #output file to write to.
+        outFile.write(headingComment + "\n\n")
         outFile.write(moduleId + "\n\n")
         outFile.write("= " + moduleName + "\n")
         print ("\n- Added module ID\n- Added module heading.")
@@ -95,7 +97,7 @@ def printUsage():
         print "\n\n====================\nfccAddModule.py Help\n====================\n\n\tThe fccAddModule.py helper program will create a new module in the flexible customer\n\tcontent/modular format. This helper program MUST run in the same directory as the\n\tmaster.adoc file. To incorporate existing topic content, use the -s or --source option.\n\tNOTE: The -s or --source will omit the first line to erase the existing [[anchor-tag]].\n\tTo APPEND an include statement to an assembly, use the -a or --assembly option.\n\tThe assembly file SHOULD exist already; however, you may create a file without\n\tthe required formatting on-the-fly. To override the default component type in\n\tfccAddModule.conf, use the -c or --component option."
         print "\nUSAGE: \n\t$ python fccAddModule.py -n '<moduleName>' [options] \n\nOPTIONS:\n"
         print "\t-n '<moduleName>' OR --name '<moduleName>' REQUIRED"
-        print "\t-t (proc|con|ref) OR --type (proc|con|ref) OPTIONAL. DEFAULT = proc"
+        print "\t-t (proc|con|ref|assembly) OR --type (proc|con|ref|assembly) OPTIONAL. DEFAULT = proc"
         print "\t-a <assemblyFile> OR --assembly <assemblyFile> OPTIONAL"
         print "\t-c <componentName> OR --component <componentName>"
         print "\t-s <sourceFileName> OR --source <sourceFileName> The source file to include. OPTIONAL"
