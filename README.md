@@ -3,6 +3,7 @@
 The `fccAddModule.py` program is a helper utility for adding a module in Red Hat's Flexible Customer Content format (FCC). The primary purpose for the program is to enable writers to specify a module name in plain text titlecase and an assembly file name. The program will:
 
 * Generate the module file
+* Add a header comment indicating which assembly includes the module
 * Add an anchor tag to the module
 * Add a heading with the specified module name
 * Generate the module file name
@@ -23,8 +24,12 @@ The foregoing usage generates a file called `proc_comp_my-module-name_en-us.adoc
 
 The generated file contents include:
 
+    // This is included in the following assemblies:
+    //
+    //
+    // assembly_assembly-file-name_en-us.adoc
     [id='my-module-name-{context}']
-    
+
     = My Module Name
 
 
@@ -37,7 +42,7 @@ The program assumes the use of an `{includedir}` variable in the assembly files.
 ## Options:
 
 * -n `<moduleName>` OR --name `<moduleName>` REQUIRED
-* -t `(proc|con|ref)` OR --type `(proc|con|ref)` OPTIONAL
+* -t `(proc|con|ref|assembly)` OR --type `(proc|con|ref|assembly)` OPTIONAL
 * -a `<assemblyFile>` OR --assembly `<assemblyFile>` OPTIONAL
 * -c `<componentName>` OR --component `<componentName>` OPTIONAL
 * -s `<sourceFileName>` OR --source `<sourceFileName>` OPTIONAL
