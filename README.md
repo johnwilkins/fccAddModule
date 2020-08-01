@@ -28,7 +28,7 @@ The generated file contents include:
     //
     //
     // assembly_assembly-file-name_en-us.adoc
-    [id='my-module-name-{context}']
+    [id='my-module-name_{context}']
 
     = My Module Name
 
