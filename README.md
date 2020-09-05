@@ -1,6 +1,6 @@
 # fccAddModule
 
-The `fccAddModule.py` program is a helper utility for adding a module in Red Hat's Flexible Customer Content format (FCC). The primary purpose for the program is to enable writers to specify a module name in plain text titlecase and an assembly file name. The program will:
+The `fccAddModule.py` program is a helper utility for adding a module in Red Hat's Flexible Customer Content format (FCC). The primary purpose for the program is to enable writers to specify a module name in plain text title case and an assembly file name. The program will:
 
 * Generate the module file
 * Add a header comment indicating which assembly includes the module
@@ -9,6 +9,8 @@ The `fccAddModule.py` program is a helper utility for adding a module in Red Hat
 * Generate the module file name
 * Save the module file; and,
 * Add/append an include statement to the assembly file, if specified.
+
+If you specify `-o` or `--old` with an old module name, the program will rename the module, including the assembly file's include statement if you specify `-a` or `--assembly`.
 
 To use the program, copy `fccAddModule.conf` and `fccAddModule.py` to your project in the same directory as `master.adoc`. Modify the default values in the `fccAddModule.conf` file as needed. The program __must__ be run in the same directory as `master.adoc` and the assembly files.
 
@@ -45,13 +47,14 @@ The program assumes the use of an `{includedir}` variable in the assembly files.
 ## Options:
 
 * -n `<moduleName>` OR --name `<moduleName>` REQUIRED
+* -o `<oldModuleName>` OR --old `<oldModuleName>` OPTIONAL
 * -t `(proc|con|ref|assembly)` OR --type `(proc|con|ref|assembly)` OPTIONAL
 * -a `<assemblyFile>` OR --assembly `<assemblyFile>` OPTIONAL
 * -c `<componentName>` OR --component `<componentName>` OPTIONAL
 * -s `<sourceFileName>` OR --source `<sourceFileName>` OPTIONAL
 * -d `<moduleDestinationPath>` OR --destination `<moduleDestinationPath>` OPTIONAL
 
-The `-t` or `--type` option specifies the type of module. The options are `proc` for procedure, `con` for concept, `ref` for reference and `assembly` for an assembly. By default, the program uses `proc`. You may override the default with the `-t` or `--type` option on the command line, or set a new default in the `fccAddModule.conf` configuration file. _Procedure_ is the most common module type so `proc` is the default value.
+The `-t` or `--type` option specifies the type of module. The options are `proc` for procedure, `con` for concept, `ref` for reference and `assembly` for an assembly. By default, the program uses `proc`. You may override the default with the `-t` or `--type` option on the command line, or set a new default in the `fccAddModule.conf` configuration file. _Procedure_ is the most common module type so `proc` is the current default value.
 
 The component name should be the product name or a sub-component of the product.
 
