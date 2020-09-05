@@ -10,7 +10,7 @@ The `fccAddModule.py` program is a helper utility for adding a module in Red Hat
 * Save the module file; and,
 * Add/append an include statement to the assembly file, if specified.
 
-If you specify `-o` or `--old` with an old module name, the program will rename the module, including the assembly file's include statement if you specify `-a` or `--assembly`.
+If you specify `-o` or `--old` with an old module name, the program will rename the module, including the anchor tag, module title, file name, and the assembly file's include statement if you specify `-a` or `--assembly`.
 
 To use the program, copy `fccAddModule.conf` and `fccAddModule.py` to your project in the same directory as `master.adoc`. Modify the default values in the `fccAddModule.conf` file as needed. The program __must__ be run in the same directory as `master.adoc` and the assembly files.
 
