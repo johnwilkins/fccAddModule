@@ -15,12 +15,13 @@ def main(argv):
 
     #Load the default values to save time on CLI usage.
     configParser = ConfigParser.RawConfigParser()
-    configParser.read('./fccAddModule.conf')
-    moduleType = configParser.get('fcc-add-module-conf', 'defaultModuleType')
-    moduleDestinationPath = configParser.get('fcc-add-module-conf', 'moduleDestinationPath')
-    componentType = configParser.get('fcc-add-module-conf', 'defaultComponentType')
-    locale = configParser.get('fcc-add-module-conf', 'defaultLocale')
-    fileExtension = configParser.get('fcc-add-module-conf', 'fileExtension')
+    configParser.read('./addModule.conf')
+    moduleType = configParser.get('add-module-conf', 'defaultModuleType')
+    moduleDestinationPath = configParser.get('add-module-conf', 'moduleDestinationPath')
+    componentType = configParser.get('add-module-conf', 'defaultComponentType')
+    locale = configParser.get('add-module-conf', 'defaultLocale')
+    fileExtension = configParser.get('add-module-conf', 'fileExtension')
+    fileNameFormat = configParser.get('add-module-conf', 'fileNameFormat')
 
     #Initialize variables
     ctx = "_{context}"
@@ -31,12 +32,12 @@ def main(argv):
     try:
 
         #define command line arguments.
-        opts, args = getopt.getopt(argv,"n:o:t:c:a:d:h",["name=","old=","type=","component=","assembly=", "destination=", "help"])
+        opts, args = getopt.getopt(argv,"n:r:t:c:a:d:f:h",["name=","rename=","type=","component=","assembly=", "destination=", "format=", "help"])
 
         for opt, arg in opts:
             if opt in ("-n", "--name"):
                 moduleName = arg
-            elif opt in ("-o", "--old"):
+            elif opt in ("-r", "--rename"):
                 oldName = arg
             elif opt in ("-t", "--type"):
                 moduleType = arg
@@ -46,11 +47,13 @@ def main(argv):
                 assemblyFileName = arg
             elif opt in ("-d", "--destination"):
                 moduleDestinationPath = arg
+            elif opt in ("-f", "--format"):
+                fileNameFormat = arg
             elif opt in ("-h", "--help"):
                 printUsage()
                 sys.exit()
 
-        #fccAddModule ALWAYS requires a module name.
+        #addModule ALWAYS requires a module name.
         if moduleName == "":
             print ("\nERROR: Module name is required! Use the -n or --name option.\n")
             printUsage()
@@ -64,7 +67,14 @@ def main(argv):
 
         moduleId = "[id='" + outputModuleId + ctx + "']"
 
-        outputFileName = createFileName(moduleDestinationPath, moduleType, componentType, outputModuleId, locale, fileExtension)
+        if fileNameFormat == "fcc":
+            outputFileName = createFccFileName(moduleDestinationPath, moduleType, componentType, outputModuleId, locale, fileExtension)
+        elif fileNameFormat == "ocp":
+            outputFileName = createOcpFileName(moduleDestinationPath, componentType, outputModuleId, fileExtension)
+        elif fileNameFormat == "":
+            printUsage()
+            sys.exit()
+
 
         includeText = getIncludeDirective(outputFileName)
 
@@ -73,7 +83,13 @@ def main(argv):
             # The inputModuleId is derived from the old name and to parse get inputFileName and old moduleID during rename operations.
             inputModuleId = getModuleID(oldName)
 
-            inputFileName = createFileName(moduleDestinationPath, moduleType, componentType, inputModuleId, locale, fileExtension)
+            if fileNameFormat == "fcc":
+                inputFileName = createFccFileName(moduleDestinationPath, moduleType, componentType, inputModuleId, locale, fileExtension)
+            elif fileNameFormat == "ocp":
+                inputFileName = createOcpFileName(moduleDestinationPath, componentType, inputModuleId, fileExtension)
+            elif fileNameFormat == "":
+                printUsage()
+                sys.exit()
 
             inputFile = open (inputFileName, 'r')
             moduleData = inputFile.read()
@@ -87,7 +103,7 @@ def main(argv):
             outFile.close()
 
             os.remove(inputFileName)
-            print ("\n- Renamed module from" + oldName + "\nto:\n" + moduleName)
+            print (outputFileName)
 
             if assemblyFileName != "":
                 assemblyFile = open(assemblyFileName, 'r')
@@ -100,21 +116,19 @@ def main(argv):
                 assemblyFile = open(assemblyFileName, 'w')
                 assemblyFile.write(modifiedAssemblyData)
                 assemblyFile.close()
-            print ("\n- Renamed include text")
+
 
         else:
             outFile = open(outputFileName, 'w') #output file to write to.
             outFile.write(headingComment + "\n\n")
             outFile.write(moduleId + "\n\n")
             outFile.write("= " + moduleName + "\n")
-            print ("\n- Added module heading.\n- Added module ID")
 
             if assemblyFileName != "":
                 assemblyFile = open(assemblyFileName, 'a')
                 assemblyFile.write("\n" + includeText + "\n")
-                print("- Added include to assembly file.")
 
-            print ("Output File: " + outputFileName)
+            print (outputFileName)
 
 
     except OSError as e:
@@ -132,8 +146,12 @@ def getModuleID(name):
     return lowercaseModuleName.replace(' ', '-')
 
 #Takes destination path, module type, component type, module ID, locale and extension and creates a file name.
-def createFileName(dpath, mtype, ctype, modId, locale, ext):
+def createFccFileName(dpath, mtype, ctype, modId, locale, ext):
     return dpath + mtype + "_" + ctype + "_" + modId + "_" + locale + ext
+
+#Takes destination path, module type, component type, module ID, locale and extension and creates a file name.
+def createOcpFileName(dpath, ctype, modId, ext):
+    return dpath + ctype + "-" + modId + ext
 
 #Takes an assembly file name and gets a heading comment.
 def getHeadingComment(assemblyFileName):
@@ -146,13 +164,14 @@ def getIncludeDirective(fileName):
 
 
 def printUsage():
-        print "\n\n====================\nfccAddModule.py Help\n====================\n\n\tThe fccAddModule.py helper program will create a new module in the flexible customer\n\tcontent/modular format. This helper program MUST run in the same directory as the\n\tmaster.adoc file. To incorporate existing topic content, use the -s or --source option.\n\tNOTE: The -s or --source will omit the first line to erase the existing [[anchor-tag]].\n\tTo APPEND an include statement to an assembly, use the -a or --assembly option.\n\tThe assembly file SHOULD exist already; however, you may create a file without\n\tthe required formatting on-the-fly. To override the default component type in\n\tfccAddModule.conf, use the -c or --component option."
-        print "\nUSAGE: \n\t$ python fccAddModule.py -n '<moduleName>' [options] \n\nOPTIONS:\n"
+        print "\n\n=================\naddModule.py Help\n=================\n\n\tThe addModule.py helper program will create a new module in the flexible customer\n\tcontent/modular format. This helper program MUST run in the same directory as the\n\tmain.adoc file. \n\n\tTo APPEND an include statement to an assembly, use the -a or --assembly option.\n\tThe assembly file SHOULD exist already; however, you may create a file without\n\tthe required formatting on-the-fly. To override the default component type in\n\taddModule.conf, use the -c or --component option."
+        print "\nUSAGE: \n\t$ addModule.py -n '<moduleName>' [options] \n\nOPTIONS:\n"
         print "\t-n '<moduleName>' OR --name '<moduleName>' REQUIRED"
-        print "\t-o '<oldModuleName>' OR --old '<oldModuleName>' OPTIONAL"
-        print "\t-t (proc|con|ref|assembly) OR --type (proc|con|ref|assembly) OPTIONAL. DEFAULT = proc"
+        print "\t-r '<oldModuleName>' OR --rename '<oldModuleName>' OPTIONAL"
+        print "\t-f <fcc|ocp> OR --format <fcc|ocp> OPTIONAL. DEFAULT = fcc"
+        print "\t-t <proc|con|ref|assembly> OR --type <proc|con|ref|assembly> OPTIONAL. DEFAULT = proc"
         print "\t-a <assemblyFile> OR --assembly <assemblyFile> OPTIONAL"
-        print "\t-c <componentName> OR --component <componentName> OPTIONAL. For default see fccAddModule.conf."
+        print "\t-c <componentName> OR --component <componentName> OPTIONAL. For default see addModule.conf."
         print "\t-d <moduleDestinationPath> OR --destination <moduleDestinationPath> The destination path for the module. OPTIONAL. DEFAULT = modules/.\n"
 
 if __name__ == "__main__":
