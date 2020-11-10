@@ -120,7 +120,7 @@ def main(argv):
 
         else:
             outFile = open(outputFileName, 'w') #output file to write to.
-            outFile.write(headingComment + "\n\n")
+            outFile.write(headingComment + "\n")
             outFile.write(moduleId + "\n\n")
             outFile.write("= " + moduleName + "\n")
 
@@ -159,7 +159,7 @@ def getHeadingComment(assemblyFileName):
 
 #Takes a file name and returns an include directive for the assembly file.
 def getIncludeDirective(fileName):
-        return "include::{includedir}/" + fileName + "[leveloffset=+1]"
+        return "include::" + fileName + "[leveloffset=+1]"
 
 
 
