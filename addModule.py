@@ -159,7 +159,7 @@ def getHeadingComment(assemblyFileName):
 
 #Takes a file name and returns an include directive for the assembly file.
 def getIncludeDirective(fileName):
-        return "include::{includedir}/" + fileName + "[leveloffset=+1]"
+        return "include::" + fileName + "[leveloffset=+1]"
 
 
 
