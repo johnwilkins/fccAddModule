@@ -61,8 +61,6 @@ The `-t` or `--type` option specifies the type of module. The options are `proc`
 
 The component name should be the product name or a sub-component of the product.
 
-The `-s` or `--source` option refers to an existing text file. Specifying an existing text file will import the text of the file after the heading. The program truncates the first line to trim anchor tags. If your file does not have an anchor tag, you should add a carriage return at the first line of the source file.
-
 The `-d` or `--destination` option is the destination path for the module. In Red Hat's Flexible Customer Content (FCC) format, module files often live in a different directory from the `main.adoc` file and assembly files. You may override the default with the `-d` or `--destination` option on the command line, or set a new default in the `addModule.conf` configuration file. Make sure to add an ending slash (_e.g._, `directory/` not `directory`).
 
 The `-f` or `--format` option is the file name format. The default format is the `fcc` format, which includes a component type and a locale. The alternate format is `ocp`, which omits a component type and the locale.
