@@ -65,7 +65,7 @@ def main(argv):
         #The outputModuleId is a component of the outputFileName and moduleID.
         outputModuleId = getModuleID(moduleName)
 
-        moduleId = "[id='" + outputModuleId + ctx + "']"
+        moduleId = '[id="' + outputModuleId + ctx + '"]'
 
         if fileNameFormat == "fcc":
             outputFileName = createFccFileName(moduleDestinationPath, moduleType, componentType, outputModuleId, locale, fileExtension)
