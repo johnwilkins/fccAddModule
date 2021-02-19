@@ -9,12 +9,12 @@
 import os
 import sys
 import getopt
-import ConfigParser
+import configparser
 
 def main(argv):
 
     #Load the default values to save time on CLI usage.
-    configParser = ConfigParser.RawConfigParser()
+    configParser = configparser.RawConfigParser()
     configParser.read('./addModule.conf')
     moduleType = configParser.get('add-module-conf', 'defaultModuleType')
     moduleDestinationPath = configParser.get('add-module-conf', 'moduleDestinationPath')
@@ -164,15 +164,15 @@ def getIncludeDirective(fileName):
 
 
 def printUsage():
-        print "\n\n=================\naddModule.py Help\n=================\n\n\tThe addModule.py helper program will create a new module in the flexible customer\n\tcontent/modular format. This helper program MUST run in the same directory as the\n\tmain.adoc file. \n\n\tTo APPEND an include statement to an assembly, use the -a or --assembly option.\n\tThe assembly file SHOULD exist already; however, you may create a file without\n\tthe required formatting on-the-fly. To override the default component type in\n\taddModule.conf, use the -c or --component option."
-        print "\nUSAGE: \n\t$ addModule.py -n '<moduleName>' [options] \n\nOPTIONS:\n"
-        print "\t-n '<moduleName>' OR --name '<moduleName>' REQUIRED"
-        print "\t-r '<oldModuleName>' OR --rename '<oldModuleName>' OPTIONAL"
-        print "\t-f <fcc|ocp> OR --format <fcc|ocp> OPTIONAL. DEFAULT = fcc"
-        print "\t-t <proc|con|ref|assembly> OR --type <proc|con|ref|assembly> OPTIONAL. DEFAULT = proc"
-        print "\t-a <assemblyFile> OR --assembly <assemblyFile> OPTIONAL"
-        print "\t-c <componentName> OR --component <componentName> OPTIONAL. For default see addModule.conf."
-        print "\t-d <moduleDestinationPath> OR --destination <moduleDestinationPath> The destination path for the module. OPTIONAL. DEFAULT = modules/.\n"
+        print ("\n\n=================\naddModule.py Help\n=================\n\n\tThe addModule.py helper program will create a new module in the flexible customer\n\tcontent/modular format. This helper program MUST run in the same directory as the\n\tmain.adoc file. \n\n\tTo APPEND an include statement to an assembly, use the -a or --assembly option.\n\tThe assembly file SHOULD exist already; however, you may create a file without\n\tthe required formatting on-the-fly. To override the default component type in\n\taddModule.conf, use the -c or --component option.")
+        print ("\nUSAGE: \n\t$ addModule.py -n '<moduleName>' [options] \n\nOPTIONS:\n")
+        print ("\t-n '<moduleName>' OR --name '<moduleName>' REQUIRED")
+        print ("\t-r '<oldModuleName>' OR --rename '<oldModuleName>' OPTIONAL")
+        print ("\t-f <fcc|ocp> OR --format <fcc|ocp> OPTIONAL. DEFAULT = fcc")
+        print ("\t-t <proc|con|ref|assembly> OR --type <proc|con|ref|assembly> OPTIONAL. DEFAULT = proc")
+        print ("\t-a <assemblyFile> OR --assembly <assemblyFile> OPTIONAL")
+        print ("\t-c <componentName> OR --component <componentName> OPTIONAL. For default see addModule.conf.")
+        print ("\t-d <moduleDestinationPath> OR --destination <moduleDestinationPath> The destination path for the module. OPTIONAL. DEFAULT = modules/.\n")
 
 if __name__ == "__main__":
     main(sys.argv[1:])
