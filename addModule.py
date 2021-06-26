@@ -22,6 +22,8 @@ def main(argv):
     locale = configParser.get('add-module-conf', 'defaultLocale')
     fileExtension = configParser.get('add-module-conf', 'fileExtension')
     fileNameFormat = configParser.get('add-module-conf', 'fileNameFormat')
+    dirpath = os.getcwd()
+    currentDirectory = os.path.basename(dirpath)
 
     #Initialize variables
     ctx = "_{context}"
@@ -60,7 +62,7 @@ def main(argv):
             sys.exit()
 
         #Create a heading comment for the file header.
-        headingComment = getHeadingComment(assemblyFileName)
+        headingComment = getHeadingComment(currentDirectory, assemblyFileName)
 
         #The outputModuleId is a component of the outputFileName and moduleID.
         outputModuleId = getModuleID(moduleName)
@@ -121,7 +123,7 @@ def main(argv):
         else:
             outFile = open(outputFileName, 'w') #output file to write to.
             outFile.write(headingComment + "\n\n")
-            outFile.write(moduleId + "\n\n")
+            outFile.write(moduleId + "\n")
             outFile.write("= " + moduleName + "\n")
 
             if assemblyFileName != "":
@@ -154,8 +156,8 @@ def createOcpFileName(dpath, ctype, modId, ext):
     return dpath + ctype + "-" + modId + ext
 
 #Takes an assembly file name and gets a heading comment.
-def getHeadingComment(assemblyFileName):
-    return "// This is included in the following assemblies:\n//\n// " + assemblyFileName
+def getHeadingComment(currentDirectory, assemblyFileName):
+    return "// This is included in the following assemblies:\n//\n// " + currentDirectory + "/" + assemblyFileName
 
 #Takes a file name and returns an include directive for the assembly file.
 def getIncludeDirective(fileName):
