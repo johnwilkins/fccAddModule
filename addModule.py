@@ -28,6 +28,7 @@ def main(argv):
     assemblyFileName = ""
     oldName = ""
     moduleName = ""
+    cwd = os.path.basename(os.getcwd())
 
     try:
 
@@ -60,7 +61,7 @@ def main(argv):
             sys.exit()
 
         #Create a heading comment for the file header.
-        headingComment = getHeadingComment(assemblyFileName)
+        headingComment = getHeadingComment(cwd, assemblyFileName)
 
         #The outputModuleId is a component of the outputFileName and moduleID.
         outputModuleId = getModuleID(moduleName)
@@ -121,7 +122,7 @@ def main(argv):
         else:
             outFile = open(outputFileName, 'w') #output file to write to.
             outFile.write(headingComment + "\n\n")
-            outFile.write(moduleId + "\n\n")
+            outFile.write(moduleId + "\n")
             outFile.write("= " + moduleName + "\n")
 
             if assemblyFileName != "":
@@ -154,8 +155,8 @@ def createOcpFileName(dpath, ctype, modId, ext):
     return dpath + ctype + "-" + modId + ext
 
 #Takes an assembly file name and gets a heading comment.
-def getHeadingComment(assemblyFileName):
-    return "// This is included in the following assemblies:\n//\n// " + assemblyFileName
+def getHeadingComment(cwd, assemblyFileName):
+    return "// This is included in the following assemblies:\n//\n// " + cwd + "/" + assemblyFileName
 
 #Takes a file name and returns an include directive for the assembly file.
 def getIncludeDirective(fileName):
