@@ -9,12 +9,12 @@
 import os
 import sys
 import getopt
-import ConfigParser
+import configparser
 
 def main(argv):
 
     #Load the default values to save time on CLI usage.
-    configParser = ConfigParser.RawConfigParser()
+    configParser = configparser.RawConfigParser()
     configParser.read('./addModule.conf')
     moduleType = configParser.get('add-module-conf', 'defaultModuleType')
     moduleDestinationPath = configParser.get('add-module-conf', 'moduleDestinationPath')
@@ -28,6 +28,7 @@ def main(argv):
     assemblyFileName = ""
     oldName = ""
     moduleName = ""
+    cwd = os.path.basename(os.getcwd())
 
     try:
 
@@ -60,7 +61,7 @@ def main(argv):
             sys.exit()
 
         #Create a heading comment for the file header.
-        headingComment = getHeadingComment(assemblyFileName)
+        headingComment = getHeadingComment(cwd, assemblyFileName)
 
         #The outputModuleId is a component of the outputFileName and moduleID.
         outputModuleId = getModuleID(moduleName)
@@ -120,8 +121,8 @@ def main(argv):
 
         else:
             outFile = open(outputFileName, 'w') #output file to write to.
-            outFile.write(headingComment + "\n")
-            outFile.write(moduleId + "\n\n")
+            outFile.write(headingComment + "\n\n")
+            outFile.write(moduleId + "\n")
             outFile.write("= " + moduleName + "\n")
 
             if assemblyFileName != "":
@@ -154,8 +155,8 @@ def createOcpFileName(dpath, ctype, modId, ext):
     return dpath + ctype + "-" + modId + ext
 
 #Takes an assembly file name and gets a heading comment.
-def getHeadingComment(assemblyFileName):
-    return "// This is included in the following assemblies:\n//\n// " + assemblyFileName
+def getHeadingComment(cwd, assemblyFileName):
+    return "// This is included in the following assemblies:\n//\n// " + cwd + "/" + assemblyFileName
 
 #Takes a file name and returns an include directive for the assembly file.
 def getIncludeDirective(fileName):
@@ -164,15 +165,15 @@ def getIncludeDirective(fileName):
 
 
 def printUsage():
-        print "\n\n=================\naddModule.py Help\n=================\n\n\tThe addModule.py helper program will create a new module in the flexible customer\n\tcontent/modular format. This helper program MUST run in the same directory as the\n\tmain.adoc file. \n\n\tTo APPEND an include statement to an assembly, use the -a or --assembly option.\n\tThe assembly file SHOULD exist already; however, you may create a file without\n\tthe required formatting on-the-fly. To override the default component type in\n\taddModule.conf, use the -c or --component option."
-        print "\nUSAGE: \n\t$ addModule.py -n '<moduleName>' [options] \n\nOPTIONS:\n"
-        print "\t-n '<moduleName>' OR --name '<moduleName>' REQUIRED"
-        print "\t-r '<oldModuleName>' OR --rename '<oldModuleName>' OPTIONAL"
-        print "\t-f <fcc|ocp> OR --format <fcc|ocp> OPTIONAL. DEFAULT = fcc"
-        print "\t-t <proc|con|ref|assembly> OR --type <proc|con|ref|assembly> OPTIONAL. DEFAULT = proc"
-        print "\t-a <assemblyFile> OR --assembly <assemblyFile> OPTIONAL"
-        print "\t-c <componentName> OR --component <componentName> OPTIONAL. For default see addModule.conf."
-        print "\t-d <moduleDestinationPath> OR --destination <moduleDestinationPath> The destination path for the module. OPTIONAL. DEFAULT = modules/.\n"
+        print ("\n\n=================\naddModule.py Help\n=================\n\n\tThe addModule.py helper program will create a new module in the flexible customer\n\tcontent/modular format. This helper program MUST run in the same directory as the\n\tmain.adoc file. \n\n\tTo APPEND an include statement to an assembly, use the -a or --assembly option.\n\tThe assembly file SHOULD exist already; however, you may create a file without\n\tthe required formatting on-the-fly. To override the default component type in\n\taddModule.conf, use the -c or --component option.")
+        print ("\nUSAGE: \n\t$ addModule.py -n '<moduleName>' [options] \n\nOPTIONS:\n")
+        print ("\t-n '<moduleName>' OR --name '<moduleName>' REQUIRED")
+        print ("\t-r '<oldModuleName>' OR --rename '<oldModuleName>' OPTIONAL")
+        print ("\t-f <fcc|ocp> OR --format <fcc|ocp> OPTIONAL. DEFAULT = fcc")
+        print ("\t-t <proc|con|ref|assembly> OR --type <proc|con|ref|assembly> OPTIONAL. DEFAULT = proc")
+        print ("\t-a <assemblyFile> OR --assembly <assemblyFile> OPTIONAL")
+        print ("\t-c <componentName> OR --component <componentName> OPTIONAL. For default see addModule.conf.")
+        print ("\t-d <moduleDestinationPath> OR --destination <moduleDestinationPath> The destination path for the module. OPTIONAL. DEFAULT = modules/.\n")
 
 if __name__ == "__main__":
     main(sys.argv[1:])
