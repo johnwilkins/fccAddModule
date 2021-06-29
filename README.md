@@ -18,7 +18,7 @@ For ease of use, modify the `defaultComponentType` setting of the `addModule.con
 
 Modify the `moduleDestinationPath` setting of the `addModule.conf` file to specify the destination path where `addModule.py` will save module file. Make sure to add an ending slash (_e.g._, `directory/` not `directory`).
 
-## Usage:
+## Usage
 
     $ python addModule.py --name "My Module Name" --assembly assembly_assembly-file-name_en-us.adoc
 
@@ -61,8 +61,46 @@ The `-t` or `--type` option specifies the type of module. The options are `proc`
 
 The component name should be the product name or a sub-component of the product.
 
-The `-s` or `--source` option refers to an existing text file. Specifying an existing text file will import the text of the file after the heading. The program truncates the first line to trim anchor tags. If your file does not have an anchor tag, you should add a carriage return at the first line of the source file.
-
 The `-d` or `--destination` option is the destination path for the module. In Red Hat's Flexible Customer Content (FCC) format, module files often live in a different directory from the `main.adoc` file and assembly files. You may override the default with the `-d` or `--destination` option on the command line, or set a new default in the `addModule.conf` configuration file. Make sure to add an ending slash (_e.g._, `directory/` not `directory`).
 
 The `-f` or `--format` option is the file name format. The default format is the `fcc` format, which includes a component type and a locale. The alternate format is `ocp`, which omits a component type and the locale.
+
+# Script development
+
+* Use Python 3.
+* Run `pip install configparser`.
+* Fork the fccAddModule repo and git clone to your home directory, for example `~/fccAddmodule`
+
+To run the script from `~/fccAddmodule` for `~/openshift-docs` repo, do the following:
+
+1. Copy `addModule.conf` to the root of your `~/openshift-docs` repo folder
+2. cd to `openshift-docs`, and run:
+    
+    $ python ../fccAddModule/addModule.py --name "My Module Name" --assembly assembly_assembly-file-name_en-us.adoc
+
+# RPM packaging
+
+Install the bare minimum of required packages (tested on Fedora 33)
+    
+    $ sudo dnf install rpm-build rpm-devel rpmdevtools
+    
+    $ pip install pyinstaller --user
+
+First-time setup of build dirs
+    
+    $ rpmdev-setuptree
+
+Copy the source files
+    
+    $ sudo cp -r ~/fccAddModule/ $HOME/rpmbuild/SOURCES/
+
+Invoke the build
+    
+    $ rpmbuild -ba ~/fccAddModule/fccAddModule.spec
+    
+    
+
+
+
+
+
