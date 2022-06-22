@@ -28,7 +28,6 @@ def main(argv):
     assemblyFileName = ""
     oldName = ""
     moduleName = ""
-    cwd = os.path.basename(os.getcwd())
 
     try:
 
@@ -61,12 +60,15 @@ def main(argv):
             sys.exit()
 
         #Create a heading comment for the file header.
-        headingComment = getHeadingComment(cwd, assemblyFileName)
+        headingComment = getHeadingComment(assemblyFileName)
+
+        #Create the :_content-type: tag.
+        contentTypeTag = getContentType(moduleType)
 
         #The outputModuleId is a component of the outputFileName and moduleID.
         outputModuleId = getModuleID(moduleName)
 
-        moduleId = "[id=\"" + outputModuleId + ctx + "\"]"
+        moduleId = "[id='" + outputModuleId + ctx + "']"
 
         if fileNameFormat == "fcc":
             outputFileName = createFccFileName(moduleDestinationPath, moduleType, componentType, outputModuleId, locale, fileExtension)
@@ -121,8 +123,9 @@ def main(argv):
 
         else:
             outFile = open(outputFileName, 'w') #output file to write to.
-            outFile.write(headingComment + "\n\n")
-            outFile.write(moduleId + "\n")
+            outFile.write(headingComment + "\n")
+            outFile.write(contentTypeTag + "\n")
+            outFile.write(moduleId + "\n\n")
             outFile.write("= " + moduleName + "\n")
 
             if assemblyFileName != "":
@@ -155,14 +158,23 @@ def createOcpFileName(dpath, ctype, modId, ext):
     return dpath + ctype + "-" + modId + ext
 
 #Takes an assembly file name and gets a heading comment.
-def getHeadingComment(cwd, assemblyFileName):
-    return "// This is included in the following assemblies:\n//\n// " + cwd + "/" + assemblyFileName
+def getHeadingComment(assemblyFileName):
+    return "// This is included in the following assemblies:\n//\n// " + assemblyFileName
 
 #Takes a file name and returns an include directive for the assembly file.
 def getIncludeDirective(fileName):
-        return "include::" + fileName + "[leveloffset=+1]"
+    return "include::" + fileName + "[leveloffset=+1]"
 
-
+def getContentType(ctype):
+    if ctype == "proc":
+        contentType = "PROCEDURE"
+    elif ctype == "con":
+        contentType = "CONCEPT"
+    elif ctype == "ref":
+        contentType = "REFERENCE"
+    elif ctype == "assembly":
+        contentType = "ASSEMBLY"
+    return ":_content-type: " + contentType
 
 def printUsage():
         print ("\n\n=================\naddModule.py Help\n=================\n\n\tThe addModule.py helper program will create a new module in the flexible customer\n\tcontent/modular format. This helper program MUST run in the same directory as the\n\tmain.adoc file. \n\n\tTo APPEND an include statement to an assembly, use the -a or --assembly option.\n\tThe assembly file SHOULD exist already; however, you may create a file without\n\tthe required formatting on-the-fly. To override the default component type in\n\taddModule.conf, use the -c or --component option.")
