@@ -123,9 +123,9 @@ def main(argv):
 
         else:
             outFile = open(outputFileName, 'w') #output file to write to.
-            outFile.write(headingComment + "\n")
+            outFile.write(headingComment + "\n\n")
             outFile.write(contentTypeTag + "\n")
-            outFile.write(moduleId + "\n\n")
+            outFile.write(moduleId + "\n")
             outFile.write("= " + moduleName + "\n")
 
             if assemblyFileName != "":
@@ -177,15 +177,16 @@ def getContentType(ctype):
     return ":_content-type: " + contentType
 
 def printUsage():
-        print ("\n\n=================\naddModule.py Help\n=================\n\n\tThe addModule.py helper program will create a new module in the flexible customer\n\tcontent/modular format. This helper program MUST run in the same directory as the\n\tmain.adoc file. \n\n\tTo APPEND an include statement to an assembly, use the -a or --assembly option.\n\tThe assembly file SHOULD exist already; however, you may create a file without\n\tthe required formatting on-the-fly. To override the default component type in\n\taddModule.conf, use the -c or --component option.")
-        print ("\nUSAGE: \n\t$ addModule.py -n '<moduleName>' [options] \n\nOPTIONS:\n")
+        print ("\n\n=================\naddModule.py Help\n=================\n\n\tThe addModule.py helper program will create a new module in the flexible customer\n\tcontent/modular format. This helper program MUST run in the same directory as the\n\tassembly files. \n\n\tTo APPEND an include statement to an assembly, use the -a or --assembly option.\n\tThe assembly file SHOULD exist already; however, you may create a file without\n\tthe required formatting on-the-fly. To override the default component type in\n\taddModule.conf, use the -c or --component option.")
+        print ("\nUSAGE: \n\t$ python3 addModule.py -n '<moduleName>' [options] \n\nOPTIONS:\n")
         print ("\t-n '<moduleName>' OR --name '<moduleName>' REQUIRED")
         print ("\t-r '<oldModuleName>' OR --rename '<oldModuleName>' OPTIONAL")
         print ("\t-f <fcc|ocp> OR --format <fcc|ocp> OPTIONAL. DEFAULT = fcc")
         print ("\t-t <proc|con|ref|assembly> OR --type <proc|con|ref|assembly> OPTIONAL. DEFAULT = proc")
         print ("\t-a <assemblyFile> OR --assembly <assemblyFile> OPTIONAL")
         print ("\t-c <componentName> OR --component <componentName> OPTIONAL. For default see addModule.conf.")
-        print ("\t-d <moduleDestinationPath> OR --destination <moduleDestinationPath> The destination path for the module. OPTIONAL. DEFAULT = modules/.\n")
+        print ("\t-d <moduleDestinationPath> OR --destination <moduleDestinationPath> The destination path for the module.")
+        print ("\n\t  OPTIONAL. DEFAULT = modules/.\n")
 
 if __name__ == "__main__":
     main(sys.argv[1:])
