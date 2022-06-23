@@ -3,7 +3,8 @@
 The `addModule.py` program is a helper utility for adding a module in Red Hat's Flexible Customer Content format (FCC). The primary purpose for the program is to enable writers to specify a module name in plain text title case and an assembly file name. The program will:
 
 * Generate the module file
-* Add a header comment indicating which assembly includes the module
+* Add a header comment in the module indicating which assembly includes the module
+* Add a :content-type: tag to the module
 * Add an anchor tag to the module
 * Add a heading with the specified module name
 * Generate the module file name in the specified format
