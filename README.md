@@ -21,7 +21,7 @@ Modify the `moduleDestinationPath` setting of the `addModule.conf` file to speci
 
 ## Usage
 
-    $ python addModule.py --name "My Module Name" --assembly assembly_assembly-file-name_en-us.adoc
+    $ python3 addModule.py --name "My Module Name" --assembly assembly_assembly-file-name_en-us.adoc
 
 The foregoing usage with the `fcc` format generates a file called `proc_comp_my-module-name_en-us.adoc` where `proc` is the default module type of procedure, `comp` is the component name, `my-module-name` is the name of the module and `en_us` specifies the locale.
 
@@ -34,13 +34,14 @@ The generated file contents include:
     //
     //
     // assembly_assembly-file-name_en-us.adoc
+    
+    :content-type: PROCEDURE
     [id='my-module-name_{context}']
-
     = My Module Name
 
 If the module is an assembly, typically the assembly will be incorporated into the `main.adoc` file or another assembly file, which is in the project directory rather than the default `modules` destination directory. Specify the `-d` option and the project folder as the destination for the module when adding an assembly. For example:
 
-    $ python addModule.py -n "Assembly" -a main.adoc -d ./ -t assembly
+    $ python3 addModule.py -n "Assembly" -a main.adoc -d ./ -t assembly
 
 The program appends an include statement to the assembly file, if specified:
 
